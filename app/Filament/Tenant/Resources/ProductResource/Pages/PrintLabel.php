@@ -56,7 +56,7 @@ class PrintLabel extends Page implements HasForms
         $fillable = collect();
         $barcodeString = $product->barcode ?? $product->sku;
         $barcode = $generator
-            ->getBarcode($barcodeString, $generator::TYPE_CODE_128, 1, 30);
+            ->getBarcode($barcodeString, $generator::TYPE_CODE_128, 3, 70);
         for ($i = 0; $i < $data['qty']; $i++) {
             $fillable->push([
                 'barcode' => $barcodeString,
@@ -64,7 +64,7 @@ class PrintLabel extends Page implements HasForms
                 'name' => $product->name,
                 'sku' => $product->sku,
                 'unit' => $product->unit,
-                'price' => Number::currency($product->selling_price, Setting::get('currency', 'IDR')),
+                'price' => 'Rp '.number_format($product->selling_price),
             ]);
         }
 

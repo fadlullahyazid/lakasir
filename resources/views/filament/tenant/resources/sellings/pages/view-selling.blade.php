@@ -140,29 +140,43 @@
         const printer = new Printer(printerData.printerId);
         let printerAction = printer.font('a');
         if(about != undefined || about != null) {
-          printerAction.size(1)
-            .align('center')
-            .text(about.shop_name)
-            .size(0)
-            .text(about.shop_location);
+          // printerAction.size(1)
+          //   .align('center')
+          //   .text(about.shop_name)
+          //   .size(0)
+          //   .text(about.shop_location);
+
+          // printerAction.table([' ', about.shop_name, '_']);
+          printerAction.textCenter(about.shop_name)
+          // printerAction.textCenter(about.shop_location)
+          printerAction.textCenter('Toko Makanan Sehat')
+          printerAction.textCenter('')
+          printerAction.textCenter('Jl. A.H. Nasution no. 176')
+          printerAction.textCenter('Kota Bandung')
           if(printerData.header != undefined) {
             printerAction
               .text(printerData.header);
           }
-          printerAction.align('left')
-            .text('-------------------------------');
+          printerAction
+            .text('================================');
+          printerAction.textCenter('Duplikat')
+          printerAction
+            .text('================================');
         }
-        printerAction.table(['@lang('Cashier')', selling.user.name])
+        printerAction.table(['Bon : '+selling.code, 'Kasir : '+selling.user.name])
+        // printerAction.table(['@lang('Cashier')', selling.user.name])
+        printerAction
+          .text('================================');
         if(selling.table != undefined && selling.table != null) {
           printerAction.table(['@lang('Table')', selling.table.number])
         }
-        printerAction.table(['@lang('Payment method')', selling.payment_method.name]);
+        // printerAction.table(['@lang('Payment method')', selling.payment_method.name]);
         if(selling.member != undefined && selling.member != null) {
           printerAction
             .table(['Member', selling.member.name]);
         }
-        printerAction
-          .text('-------------------------------');
+        // printerAction
+        //   .text('--------------------------------');
         selling.selling_details.forEach(sellingDetail => {
           let price = sellingDetail.price;
           let text = moneyFormat(sellingDetail.price / sellingDetail.qty) + ' x ' + sellingDetail.qty.toString();
@@ -170,16 +184,13 @@
           if (sellingDetail.discount_price > 0) {
             price = price - sellingDetail.discount_price;
             printerAction
-              .align('right')
-              .text(`(${moneyFormat(sellingDetail.discount_price)})`)
+              .textRight(`(${moneyFormat(sellingDetail.discount_price)})`)
           }
           printerAction
-            .align('right')
-            .text(moneyFormat(price))
-            .align('left')
+            .textRight(moneyFormat(price))
         });
         printerAction
-          .text('-------------------------------');
+          .text('--------------------------------');
         if("@js(feature(SellingTax::class))" == 'true') {
           printerAction.table(['@lang('Tax')', `${selling.tax}%`])
             .table(['@lang('Tax price')', moneyFormat(selling.tax_price)]);
@@ -188,16 +199,16 @@
           .table(['@lang('Subtotal')', moneyFormat(selling.total_price)])
           .table(['@lang('Discount')', `(${moneyFormat(selling.total_discount_per_item + selling.discount_price)})`])
           .table(['@lang('Total price')', moneyFormat(selling.grand_total_price)])
-          .text('-------------------------------')
+          .text('--------------------------------')
           .table(['@lang('Payed money')', moneyFormat(selling.payed_money)])
-          .table(['@lang('Change')', moneyFormat(selling.money_changes)])
-          .align('center');
+          .table(['@lang('Change')', moneyFormat(selling.money_changes)]);
         if(printerData.footer != undefined) {
           printerAction
             .text(printerData.footer);
         }
-        printerAction.align('left')
-          .text('copy');
+
+        printerAction.textCenter('')
+        printerAction.textCenter('Terima kasih atas kunjungannya')
 
         await printerAction
           .cut()

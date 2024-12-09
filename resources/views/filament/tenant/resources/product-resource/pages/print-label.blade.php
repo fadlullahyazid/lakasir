@@ -6,7 +6,7 @@
           style="column-gap: {{ $data['horizontal_gap'] }}px; row-gap: {{ $data['vertical_gap'] }}px;"
           class="grid grid-cols-{{ $data['items_per_row'] ?? 1 }} gap-x-4">
           @foreach($products as $product)
-            <div class="border border-black px-2 text-center py-2">
+            <div class="text-black px-2 text-center py-2">
               <p class="text-center font-bold">{{ $product['name'] }}</p>
               <p>{{ $product['price'] }}</p>
               <div class="flex justify-center">

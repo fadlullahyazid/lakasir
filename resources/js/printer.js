@@ -84,6 +84,26 @@ class Printer {
     return this;
   }
 
+  textCenter(text) {
+    let textLength = text.length;
+    let space = Math.floor((this.lineWidth - textLength) / 2)+1;
+    let s = new Array(space).join(' ');
+    
+    text = s + text;
+    this.addCommand(text + '\n');
+    return this;
+  }
+
+  textRight(text) {
+    let textLength = text.length;
+    let space = Math.floor((this.lineWidth - textLength))+1;
+    let s = new Array(space).join(' ');
+    
+    text = s + text;
+    this.addCommand(text + '\n');
+    return this;
+  }
+
   barcode(code, type) {
     const types = {
       'EAN8': '\x1d\x6b\x02'
@@ -96,7 +116,7 @@ class Printer {
     let row = '';
     const totalTextLength = data.reduce((sum, text) => sum + text.length, 0);
 
-    const totalPadding = this.lineWidth - totalTextLength;
+    const totalPadding = (this.lineWidth - totalTextLength) / (data.length-1);
     data.forEach((text, index) => {
       row += text;
       if (index < data.length) {
@@ -140,7 +160,7 @@ class Printer {
   }
 
   cut() {
-    this.addCommand('\n\n' + '\x1d\x56\x00');
+    this.addCommand('\n\n\n\n' + '\x1d\x56\x00');
     return this;
   }
 

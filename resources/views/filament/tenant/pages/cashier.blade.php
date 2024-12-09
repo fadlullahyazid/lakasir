@@ -204,19 +204,19 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
           <div class="grid grid-cols-3 gap-4 mt-4" id="calculator-button-shortcut">
           </div>
           <div class="grid grid-cols-3 gap-2 lg:gap-2 mt-2 lg:mt-2" id="calculator-button">
-            <button type="button" class="col-span-3 bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append('no_changes')">{{ __('No change') }}</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(7)">7</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(8)">8</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(9)">9</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(4)">4</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(5)">5</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(6)">6</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(1)">1</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(2)">2</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(3)">3</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append('.')">.</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg" x-on:click="append(0)">0</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg flex justify-center items-center" x-on:click="append('backspace')">
+            <button type="button" class="col-span-3 bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append('no_changes')">{{ __('No change') }}</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(7)">7</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(8)">8</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(9)">9</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(4)">4</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(5)">5</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(6)">6</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(1)">1</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(2)">2</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(3)">3</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append('.')">.</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(0)">0</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800 flex justify-center items-center" x-on:click="append('backspace')">
               <x-filament::icon
                 icon="heroicon-o-backspace"
                 class="h-5 w-5 text-gray-500 dark:text-white"
@@ -233,7 +233,7 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
               </button>
               <button
                 wire:click="dispatch('close-modal', {id: 'proceed-the-payment'});"
-                type="button" class="w-full bg-gray-300 p-2 rounded-md text-lg flex justify-center items-center gap-x-2">
+                type="button" class="w-full bg-gray-300 p-2 rounded-md text-lg flex justify-center items-center gap-x-2 dark:bg-gray-800">
                 {{ __('Close') }}
               </button>
             </div>
@@ -341,29 +341,35 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
         const printer = new Printer(printerData.printerId);
         let printerAction = printer.font('a');
         if(about != undefined || about != null) {
-          printerAction.size(1)
-            .align('center')
-            .text(about.shop_name)
-            .size(0)
-            .text(about.shop_location);
+          // printerAction.table([' ', about.shop_name, '_']);
+          printerAction.textCenter(about.shop_name)
+          // printerAction.textCenter(about.shop_location)
+          printerAction.textCenter('Toko Makanan Sehat')
+          printerAction.textCenter('')
+          printerAction.textCenter('Jl. A.H. Nasution no. 176')
+          printerAction.textCenter('Kota Bandung')
           if(printerData.header != undefined) {
             printerAction
               .text(printerData.header);
           }
-          printerAction.align('left')
-            .text('-------------------------------');
+          printerAction
+            .text('================================');
         }
-        printerAction.table(['@lang('Cashier')', selling.user.name])
+        printerAction.table(['Bon : '+selling.code, 'Kasir : '+selling.user.name])
+        // printerAction.table(['@lang('Cashier')', selling.user.name])
+        printerAction
+          .text('================================');
+        // printerAction.table(['@lang('Cashier')', selling.user.name])
         if(selling.table != undefined && selling.table != null) {
           printerAction.table(['@lang('Table')', selling.table.number])
         }
-        printerAction.table(['@lang('Payment method')', selling.payment_method.name]);
+        // printerAction.table(['@lang('Payment method')', selling.payment_method.name]);
         if(selling.member != undefined && selling.member != null) {
           printerAction
             .table(['Member', selling.member.name]);
         }
-        printerAction
-          .text('-------------------------------');
+        // printerAction
+        //   .text('--------------------------------');
         selling.selling_details.forEach(sellingDetail => {
           let price = sellingDetail.price;
           let text = moneyFormat(sellingDetail.price / sellingDetail.qty) + ' x ' + sellingDetail.qty.toString();
@@ -371,16 +377,13 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
           if (sellingDetail.discount_price > 0) {
             price = price - sellingDetail.discount_price;
             printerAction
-              .align('right')
-              .text(`(${moneyFormat(sellingDetail.discount_price)})`)
+              .textRight(`(${moneyFormat(sellingDetail.discount_price)})`)
           }
           printerAction
-            .align('right')
-            .text(moneyFormat(price))
-            .align('left')
+            .textRight(moneyFormat(price))
         });
         printerAction
-          .text('-------------------------------');
+          .text('--------------------------------');
         if("@js(feature(SellingTax::class))" == 'true') {
           printerAction.table(['@lang('Tax')', `${selling.tax}%`])
             .table(['@lang('Tax price')', moneyFormat(selling.tax_price)]);
@@ -393,15 +396,17 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
         }
         printerAction
           .table(['@lang('Total price')', moneyFormat(selling.grand_total_price)])
-          .text('-------------------------------')
+          .text('--------------------------------')
           .table(['@lang('Payed money')', moneyFormat(selling.payed_money)])
-          .table(['@lang('Change')', moneyFormat(selling.money_changes)])
-          .align('center');
+          .table(['@lang('Change')', moneyFormat(selling.money_changes)]);
 
         if(printerData.footer != undefined) {
           printerAction
             .text(printerData.footer);
         }
+
+        printerAction.textCenter('')
+        printerAction.textCenter('Terima kasih atas kunjungannya')
 
         await printerAction
           .cut()
@@ -501,7 +506,7 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
       button.textContent = moneyFormat(suggestion);
       button.setAttribute('type', 'button')
       button.setAttribute('x-on:click', `shortcut(${suggestion})`);
-      button.className = 'bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg';
+      button.className = 'bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800';
       calculatorBtn.appendChild(button);
     }
   }
