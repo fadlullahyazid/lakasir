@@ -8,16 +8,16 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
     <div class="col-span-2">
       {{ $this->table }}
     </div>
-    <div class="fixed right-0 w-1/3 h-screen pb-10 overflow-y-scroll">
+    <div class="fixed right-0 w-1/3 pb-10 overflow-y-auto">
       <div class="px-4 mt-4 space-y-2 h-screen">
         <div class="flex justify-between items-center" x-data="fullscreen">
-          <p class="text-xl font-semibold">{{ __('Orders details') }}</p>
+          <p class="text-md font-semibold">{{ __('Orders details') }}</p>
           <div class="flex items-center">
             <div class="xl:flex gap-x-2 hidden items-center">
               <a
                 href="/member/sellings"
-                class="py-1 px-4 flex justify-center items-center bg-gray-100 rounded-lg gap-x-1 text-gray-500">
-                <x-heroicon-o-arrow-left class="h-4 w-4 text-gray-500"/>
+                class="py-1 px-4 flex justify-center items-center dark:bg-gray-800 bg-gray-100 rounded-lg gap-x-1 dark:text-white text-gray-500">
+                <x-heroicon-o-arrow-left class="h-4 w-4 dark:text-white text-gray-500"/>
                   <p class="hidden lg:block">{{ __('Back') }} </p>
               </a>
             </div>
@@ -53,17 +53,17 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
             </div>
           </div>
         </div>
-        <hr/>
-        <div class="lg:flex hidden justify-between">
+        <div class="w-full border-t border-t-white/10"></div>
+        <!-- <div class="lg:flex hidden justify-between">
           <p class="">{{ Filament::auth()->user()->cashier_name }}</p>
-        </div>
-        <div class="flex justify-between items-center">
-          <p class="hidden lg:block text-2xl font-semibold mb-2">{{ __('Current Orders') }}</p>
+        </div> -->
+        <!-- <div class="flex justify-between items-center">
+          <p class="hidden lg:block text-md font-semibold mb-2">{{ __('Current Orders') }}</p>
           <div class="flex gap-x-1"></div>
-        </div>
-        <div class="overflow-y-scroll min-h-40 max-h-[35%] overflow-auto" wire:loading.class="opacity-20" wire:target="addCart,reduceCart,deleteCart,addDiscountPricePerItem,addCartUsingScanner">
+        </div> -->
+        <div class="overflow-y-auto min-h-40 max-h-[36%] overflow-auto gap-2 flex flex-col" wire:loading.class="opacity-20" wire:target="addCart,reduceCart,deleteCart,addDiscountPricePerItem,addCartUsingScanner">
           @forelse($cartItems as $item)
-            <div class="mb-2 border rounded-lg bg-white dark:border-gray-900 dark:bg-gray-900 px-4 py-2" id="{{ $item->id }}" key="{{ rand() }}">
+            <div class="border rounded-lg bg-white dark:border-gray-900 dark:bg-gray-900 px-4 py-2" id="{{ $item->id }}" key="{{ rand() }}">
               <div class="grid items-center space-x-3">
                 <div class="flex justify-between">
                   <p class="font-semibold"> {{ $item->product->name }}</p>
@@ -93,7 +93,7 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
                   @endif
                 </div>
               </div>
-                <div class="flex space-x-3 h-8">
+                <div class="flex space-x-3 h-8 mt-2">
                   <button
                     class="!bg-lakasir-primary rounded-lg px-2 py-1"
                     wire:click.stop="addCart( {{ $item->product_id  }} )"
@@ -121,8 +121,8 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
             </div>
           @empty
             <div class="flex justify-center items-center h-40 border bg-white rounded-lg dark:border-gray-900 dark:bg-gray-900">
-              <x-heroicon-o-x-mark class="text-gray-900 dark:text-white h-10 w-10 hidden lg:block"/>
-                <p class="text-xl lg:text-3xl text-gray-600 dark:text-white">{{ __('No item') }}</p>
+              <!-- <x-heroicon-o-x-mark class="text-gray-900 dark:text-white h-6 w-6 hidden lg:block"/> -->
+                <p class="text-md lg:text-md text-gray-600 dark:text-white">{{ __('No item') }}</p>
             </div>
           @endforelse
         </div>
@@ -193,7 +193,7 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
           @error('payed_money') <span class="error text-danger-500">{{ $message }}</span> @enderror
           <input
             id="display"
-            class="w-full p-2 border border-gray-300 rounded-md text-lg text-right dark:bg-gray-900 bg-white dark:text-white text-black @error('payed_money') 'border-danger-500' @enderror"
+            class="w-full p-2 border border-gray-700 rounded-md text-md text-right dark:bg-gray-900 bg-white dark:text-white text-black dark:focus:ring-0 dark:focus:border-primary-600 @error('payed_money') 'border-danger-500' @enderror"
             focus
             :disabled="isTouchScreen"
             x-mask:dynamic="$money($input)"
@@ -201,22 +201,22 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
             x-ref="payedMoney"
             inputMode="numeric"
           >
-          <div class="grid grid-cols-3 gap-4 mt-4" id="calculator-button-shortcut">
+          <div class="grid grid-cols-3 gap-2 mt-4" id="calculator-button-shortcut">
           </div>
           <div class="grid grid-cols-3 gap-2 lg:gap-2 mt-2 lg:mt-2" id="calculator-button">
-            <button type="button" class="col-span-3 bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append('no_changes')">{{ __('No change') }}</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(7)">7</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(8)">8</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(9)">9</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(4)">4</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(5)">5</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(6)">6</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(1)">1</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(2)">2</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(3)">3</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append('.')">.</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800" x-on:click="append(0)">0</button>
-            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800 flex justify-center items-center" x-on:click="append('backspace')">
+            <button type="button" class="col-span-3 bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append('no_changes')">{{ __('No change') }}</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(7)">7</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(8)">8</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(9)">9</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(4)">4</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(5)">5</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(6)">6</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(1)">1</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(2)">2</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(3)">3</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append('.')">.</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800" x-on:click="append(0)">0</button>
+            <button type="button" class="bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800 flex justify-center items-center" x-on:click="append('backspace')">
               <x-filament::icon
                 icon="heroicon-o-backspace"
                 class="h-5 w-5 text-gray-500 dark:text-white"
@@ -225,7 +225,7 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
             <div class="flex col-span-3 gap-x-2">
               <button
                 wire:loading.attr="disabled"
-                type="submit" class="w-full bg-lakasir-primary hover:bg-[#ff6611] p-2 rounded-md text-white text-lg flex justify-center items-center gap-x-2">
+                type="submit" class="w-full bg-lakasir-primary hover:bg-[#ff6611] p-2 rounded-md text-white text-md flex justify-center items-center gap-x-2">
                 <div wire:loading>
                   <x-filament::loading-indicator class="h-5 w-5"/>
                 </div>
@@ -233,17 +233,17 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
               </button>
               <button
                 wire:click="dispatch('close-modal', {id: 'proceed-the-payment'});"
-                type="button" class="w-full bg-gray-300 p-2 rounded-md text-lg flex justify-center items-center gap-x-2 dark:bg-gray-800">
+                type="button" class="w-full bg-gray-300 p-2 rounded-md text-md flex justify-center items-center gap-x-2 dark:bg-gray-800">
                 {{ __('Close') }}
               </button>
             </div>
           </div>
         </div>
       </div>
-      <div class="overflow-y-scroll max-h-[80vh] hidden md:block">
+      <div class="overflow-y-auto max-h-[80vh] hidden md:block">
         @if ($errors->any())
           @foreach ($errors->all() as $error)
-            <p class="error text-danger-500 text-lg text-center w-full">{{ $error }}</p>
+            <p class="error text-danger-500 text-md text-center w-full">{{ $error }}</p>
           @endforeach
         @endif
         @include('filament.tenant.pages.cashier.items')
@@ -506,7 +506,7 @@ use App\Features\{PaymentShortcutButton, SellingTax, Discount};
       button.textContent = moneyFormat(suggestion);
       button.setAttribute('type', 'button')
       button.setAttribute('x-on:click', `shortcut(${suggestion})`);
-      button.className = 'bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-lg dark:bg-gray-800';
+      button.className = 'bg-gray-300 hover:bg-gray-400 p-2 rounded-md text-md dark:bg-gray-800';
       calculatorBtn.appendChild(button);
     }
   }

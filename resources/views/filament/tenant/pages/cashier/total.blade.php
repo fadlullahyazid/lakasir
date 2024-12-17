@@ -20,7 +20,7 @@ use App\Features\{SellingTax, Discount};
       <p class="font-bold text-lakasir-primary">({{ price_format($this->discount_price) }})</p>
     </div>
   @endfeature
-  <hr/>
+  <div class="w-full border-t border-t-white/10"></div>
   <div class="flex justify-between">
     <p class="font-bold">{{ __('Total') }}</p>
     <p class="font-bold text-lakasir-primary" x-ref="total" data-value="{{ $total_price }}">{{ price_format($total_price) }}</p>

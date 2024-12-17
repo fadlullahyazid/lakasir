@@ -36,7 +36,9 @@ trait TableProduct
                     })
                     ->where('show', true)
                     // ->orWhere('type', 'service')
-                    ->limit(12)
+                    // ->limit(12)
+                    ->orderBy('id', 'desc')
+                    
             )
             ->paginated(false)
             ->columns([
@@ -48,18 +50,21 @@ trait TableProduct
                             'class' => 'py-0',
                         ])
                         ->extraImgAttributes([
-                            'class' => 'mb-4 object-cover -mt-4 xl:w-[200px] md:w-[180px] w-[150px]',
+                            'class' => 'mb-4 object-cover w-full rounded-t-xl',
                         ])
-                        ->height(100),
+                        ->height('100%'),
                     TextColumn::make('selling_price')
                         ->color('primary')
                         ->money(Setting::get('currency', 'IDR'))
-                        ->columnStart(0),
+                        ->columnStart(0)
+                        ->extraAttributes([
+                            'class' => 'font-bold mx-4',
+                        ]),
                     TextColumn::make('name')
-                        ->size('lg')
+                        ->size('md')
                         ->searchable(['sku', 'name', 'barcode'])
                         ->extraAttributes([
-                            'class' => 'font-bold',
+                            'class' => 'font-bold mx-4',
                         ]),
                     TextColumn::make('stock')
                         ->hidden(function (Product $product) {
@@ -79,11 +84,14 @@ trait TableProduct
                             'class' => 'font-bold',
                         ])
                         ->formatStateUsing(fn (Product $product) => __('Stock').': '.$product->stock),
+                ])
+                ->extraAttributes([
+                    'class' => '-mx-4 -mt-4 h-full',
                 ]),
             ])
             ->contentGrid([
-                'md' => 3,
-                'xl' => 4,
+                'md' => 4,
+                'xl' => 5,
             ])
             ->headerActionsPosition(HeaderActionsPosition::Bottom)
             ->searchPlaceholder(__('Search (SKU, name, barcode)'))
@@ -110,17 +118,47 @@ trait TableProduct
                             ->default(1),
                     ])
                     ->extraAttributes([
-                        'class' => 'mr-auto',
+                        'class' => 'mr-auto h-auto !absolute bottom-4',
                     ])
                     ->action(fn (Product $product, array $data) => $this->addCart($product, $data))
                     ->hiddenLabel(),
+
+                Action::make('insert_amount')
+                ->translateLabel()
+                ->icon('heroicon-o-plus')
+                ->button()
+                ->form([
+                    TextInput::make('amount')
+                        ->translateLabel()
+                        ->extraAttributes([
+                            'focus',
+                        ])
+                        ->rules([
+                            function (Product $product) {
+                                return function (string $attribute, $value, Closure $fail) use ($product) {
+                                    if (! $this->validateStock($product, $value)) {
+                                        $fail('Stock is out');
+                                    }
+                                };
+                            },
+                        ])
+                        ->default(1),
+                ])
+                ->extraAttributes([
+                    'class' => 'invisible',
+                ])
+                ->action(fn (Product $product, array $data) => $this->addCart($product, $data))
+                ->hiddenLabel(),
                 Action::make('cart')
                     ->label(function (Product $product) {
                         return $product->CartItems()->first()?->qty ?? '';
                     })
                     ->color('white')
                     ->icon('heroicon-o-shopping-bag')
-                    ->hidden(fn (Product $product) => ! $product->CartItems()->exists()),
+                    ->hidden(fn (Product $product) => ! $product->CartItems()->exists())
+                    ->extraAttributes([
+                        'class' => 'h-auto !absolute bottom-4 right-4',
+                    ]),
             ]);
     }
 }

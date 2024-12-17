@@ -12,7 +12,7 @@
         title: '@lang('Search member')'
       })">
       <p>{{ __('Member') }}</p>
-      <p class="font-bold">{{ $cartDetail['member_label'] ?? 'No Member Selected' }}</p>
+      <p class="font-bold">{{ $cartDetail['member_label'] ?? 'Tidak ada member dipilih' }}</p>
     </div>
   @endfeature
   <div class="flex justify-between hover:underline cursor-pointer"
